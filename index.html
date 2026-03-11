@@ -1,0 +1,1755 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Where Winds Meet — RPG Action Wuxia gratuit open-world. Forgez votre légende dans la Chine du 10e siècle. Téléchargez gratuitement sur Steam PC, PS5 &amp; Mobile.">
+    <meta property="og:title" content="Where Winds Meet | RPG Wuxia Gratuit — Forgez Votre Légende">
+    <meta property="og:description"
+        content="20+ régions, combat fluide, co-op 4 joueurs, cross-play PC/PS5/Mobile. F2P AAA.">
+    <title>Where Winds Meet | RPG Wuxia Gratuit — Forgez Votre Légende</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Inter:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <style>
+        /* ===== RESET & TOKENS ===== */
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0
+        }
+
+        :root {
+            --red: #c8102e;
+            --red-bright: #ff2244;
+            --red-dark: #8b0000;
+            --gold: #d4a017;
+            --gold-light: #f0c040;
+            --bg: #080808;
+            --bg2: #0f0f0f;
+            --bg3: #161616;
+            --surface: #1a1a1a;
+            --surface2: #222;
+            --text: #e8e0d0;
+            --text2: #a89880;
+            --text3: #6b5c4e;
+            --white: #fff;
+            --ff-head: 'Cinzel', serif;
+            --ff-body: 'Inter', sans-serif;
+            --max: 1200px;
+            --trans: 0.3s ease;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: var(--ff-body);
+            overflow-x: hidden;
+            line-height: 1.6
+        }
+
+        img {
+            max-width: 100%;
+            display: block
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit
+        }
+
+        button {
+            cursor: pointer;
+            border: none;
+            background: none;
+            font-family: var(--ff-body)
+        }
+
+        /* ===== SCROLLBAR ===== */
+        ::-webkit-scrollbar {
+            width: 6px
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg)
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--red-dark);
+            border-radius: 3px
+        }
+
+        /* ===== PARTICLES CANVAS ===== */
+        #particles-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            opacity: .5
+        }
+
+        /* ===== NAV ===== */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 1rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: background var(--trans), backdrop-filter var(--trans)
+        }
+
+        nav.scrolled {
+            background: rgba(8, 8, 8, 0.92);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(200, 16, 46, 0.2)
+        }
+
+        .nav-logo {
+            font-family: var(--ff-head);
+            font-size: 1.1rem;
+            font-weight: 900;
+            color: var(--gold-light);
+            letter-spacing: .1em;
+            text-transform: uppercase
+        }
+
+        .nav-logo span {
+            color: var(--red)
+        }
+
+        .nav-cta {
+            background: var(--red);
+            color: #fff;
+            padding: .5rem 1.4rem;
+            border-radius: 4px;
+            font-weight: 700;
+            font-size: .85rem;
+            letter-spacing: .05em;
+            text-transform: uppercase;
+            transition: background var(--trans), transform var(--trans), box-shadow var(--trans)
+        }
+
+        .nav-cta:hover {
+            background: var(--red-bright);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 20px rgba(200, 16, 46, 0.5)
+        }
+
+        /* ===== HERO ===== */
+        #hero {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            overflow: hidden
+        }
+
+        .hero-bg {
+            position: absolute;
+            inset: 0;
+            background-image: url('hero_bg.jpeg');
+            background-size: cover;
+            background-position: center;
+            z-index: 1
+        }
+
+        .hero-bg::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom, rgba(8, 8, 8, 0.25) 0%, rgba(8, 8, 8, 0.5) 60%, rgba(8, 8, 8, 1) 100%)
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 860px;
+            padding: 2rem;
+            animation: heroFadeIn 1.2s ease forwards
+        }
+
+        @keyframes heroFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px)
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0)
+            }
+        }
+
+        .hero-badge {
+            display: inline-block;
+            background: rgba(200, 16, 46, 0.15);
+            border: 1px solid rgba(200, 16, 46, 0.5);
+            color: var(--gold-light);
+            font-size: .75rem;
+            font-weight: 700;
+            letter-spacing: .2em;
+            text-transform: uppercase;
+            padding: .35rem 1rem;
+            border-radius: 20px;
+            margin-bottom: 1.5rem
+        }
+
+        .hero-title {
+            font-family: var(--ff-head);
+            font-size: clamp(2rem, 6vw, 4.2rem);
+            font-weight: 900;
+            line-height: 1.1;
+            color: var(--white);
+            text-shadow: 0 2px 40px rgba(0, 0, 0, 0.8);
+            margin-bottom: 1.2rem
+        }
+
+        .hero-title .accent {
+            color: var(--red-bright)
+        }
+
+        .hero-sub {
+            font-size: clamp(.95rem, 2.5vw, 1.2rem);
+            color: var(--text2);
+            max-width: 620px;
+            margin: 0 auto 2.5rem;
+            line-height: 1.7
+        }
+
+        .hero-sub strong {
+            color: var(--gold-light)
+        }
+
+        .hero-cta-wrap {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: center;
+            align-items: center
+        }
+
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: .6rem;
+            background: linear-gradient(135deg, var(--red-dark), var(--red));
+            color: #fff;
+            padding: 1rem 2.2rem;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: 700;
+            letter-spacing: .06em;
+            text-transform: uppercase;
+            box-shadow: 0 4px 30px rgba(200, 16, 46, 0.45);
+            transition: all var(--trans);
+            position: relative;
+            overflow: hidden
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(255, 255, 255, .1), transparent);
+            opacity: 0;
+            transition: opacity var(--trans)
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 8px 40px rgba(200, 16, 46, 0.65)
+        }
+
+        .btn-primary:hover::before {
+            opacity: 1
+        }
+
+        .btn-primary svg {
+            width: 20px;
+            height: 20px;
+            flex-shrink: 0
+        }
+
+        .btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: .5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: var(--text);
+            padding: .95rem 1.8rem;
+            border-radius: 6px;
+            font-size: .95rem;
+            font-weight: 600;
+            transition: all var(--trans)
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: var(--gold);
+            color: var(--gold-light)
+        }
+
+        .hero-arrow {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 2;
+            animation: bounce 2s infinite
+        }
+
+        @keyframes bounce {
+
+            0%,
+            100% {
+                transform: translateX(-50%) translateY(0)
+            }
+
+            50% {
+                transform: translateX(-50%) translateY(8px)
+            }
+        }
+
+        .hero-arrow svg {
+            width: 28px;
+            height: 28px;
+            color: var(--red);
+            opacity: .7
+        }
+
+        .hero-trusted {
+            margin-top: 2.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1.5rem;
+            flex-wrap: wrap
+        }
+
+        .hero-trusted span {
+            font-size: .78rem;
+            color: var(--text3);
+            letter-spacing: .1em;
+            text-transform: uppercase
+        }
+
+        .trust-pill {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: .3rem .9rem;
+            border-radius: 20px;
+            font-size: .78rem;
+            color: var(--text2);
+            font-weight: 600
+        }
+
+        .trust-pill.green {
+            border-color: rgba(34, 197, 94, 0.4);
+            color: #4ade80
+        }
+
+        /* ===== SECTION BASE ===== */
+        section {
+            position: relative;
+            z-index: 1
+        }
+
+        .container {
+            max-width: var(--max);
+            margin: 0 auto;
+            padding: 0 1.5rem
+        }
+
+        .section-label {
+            display: inline-block;
+            font-size: .72rem;
+            font-weight: 700;
+            letter-spacing: .25em;
+            text-transform: uppercase;
+            color: var(--red);
+            margin-bottom: .8rem
+        }
+
+        .section-title {
+            font-family: var(--ff-head);
+            font-size: clamp(1.6rem, 4vw, 2.8rem);
+            font-weight: 700;
+            color: var(--white);
+            line-height: 1.2;
+            margin-bottom: 1rem
+        }
+
+        .section-sub {
+            font-size: 1rem;
+            color: var(--text2);
+            max-width: 640px;
+            line-height: 1.7
+        }
+
+        .divider {
+            height: 1px;
+            background: linear-gradient(to right, transparent, rgba(200, 16, 46, 0.4), transparent);
+            margin: 0 auto
+        }
+
+        /* ===== WHY SECTION ===== */
+        #why {
+            padding: 6rem 0 5rem;
+            background: var(--bg2)
+        }
+
+        .why-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.5rem;
+            margin-top: 3rem
+        }
+
+        .why-card {
+            background: var(--surface);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 2rem;
+            transition: all var(--trans);
+            position: relative;
+            overflow: hidden
+        }
+
+        .why-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(to right, var(--red-dark), var(--red-bright));
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform var(--trans)
+        }
+
+        .why-card:hover {
+            border-color: rgba(200, 16, 46, 0.3);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4)
+        }
+
+        .why-card:hover::before {
+            transform: scaleX(1)
+        }
+
+        .why-icon {
+            font-size: 2.4rem;
+            margin-bottom: 1.2rem;
+            display: block
+        }
+
+        .why-card h3 {
+            font-family: var(--ff-head);
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--white);
+            margin-bottom: .6rem
+        }
+
+        .why-card p {
+            font-size: .9rem;
+            color: var(--text2);
+            line-height: 1.6
+        }
+
+        /* ===== GALLERY ===== */
+        #gallery {
+            padding: 5rem 0;
+            background: var(--bg)
+        }
+
+        .gallery-header {
+            text-align: center;
+            margin-bottom: 3rem
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            grid-template-rows: auto;
+            gap: 1rem
+        }
+
+        .g-item {
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+            cursor: pointer
+        }
+
+        .g-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform .5s ease, filter .5s ease
+        }
+
+        .g-item:hover img {
+            transform: scale(1.04);
+            filter: brightness(1.1)
+        }
+
+        .g-item:nth-child(1) {
+            grid-column: 1/8;
+            grid-row: 1
+        }
+
+        .g-item:nth-child(2) {
+            grid-column: 8/13;
+            grid-row: 1
+        }
+
+        .g-item:nth-child(3) {
+            grid-column: 1/5;
+            grid-row: 2
+        }
+
+        .g-item:nth-child(4) {
+            grid-column: 5/13;
+            grid-row: 2
+        }
+
+        .g-item img {
+            height: 260px
+        }
+
+        .g-item:nth-child(1) img,
+        .g-item:nth-child(4) img {
+            height: 280px
+        }
+
+        .gallery-badge {
+            margin-top: 2rem;
+            display: flex;
+            justify-content: center
+        }
+
+        .steam-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: .8rem;
+            background: var(--surface);
+            border: 1px solid rgba(200, 16, 46, 0.3);
+            border-radius: 8px;
+            padding: .8rem 1.5rem
+        }
+
+        .steam-badge .rating {
+            font-family: var(--ff-head);
+            font-size: 1rem;
+            font-weight: 700;
+            color: #4ade80
+        }
+
+        .steam-badge .label {
+            font-size: .82rem;
+            color: var(--text2)
+        }
+
+        /* ===== WORLD SECTION ===== */
+        #world {
+            padding: 6rem 0;
+            background: var(--bg2);
+            overflow: hidden
+        }
+
+        .world-inner {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center
+        }
+
+        .world-image-wrap {
+            position: relative;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6)
+        }
+
+        .world-image-wrap img {
+            width: 100%;
+            aspect-ratio: 16/10;
+            object-fit: cover
+        }
+
+        .world-image-wrap::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border: 1px solid rgba(200, 16, 46, 0.2);
+            border-radius: 16px;
+            pointer-events: none
+        }
+
+        .world-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-top: 2rem
+        }
+
+        .stat-box {
+            background: var(--surface);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 8px;
+            padding: 1rem;
+            text-align: center
+        }
+
+        .stat-box .num {
+            font-family: var(--ff-head);
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: var(--red-bright)
+        }
+
+        .stat-box .label {
+            font-size: .78rem;
+            color: var(--text2);
+            text-transform: uppercase;
+            letter-spacing: .1em;
+            margin-top: .2rem
+        }
+
+        /* ===== COMBAT SECTION ===== */
+        #combat {
+            padding: 6rem 0;
+            background: var(--bg)
+        }
+
+        .combat-header {
+            text-align: center;
+            margin-bottom: 3rem
+        }
+
+        .weapons-carousel {
+            position: relative;
+            overflow: hidden;
+            margin-top: 1rem
+        }
+
+        .weapons-track {
+            display: flex;
+            transition: transform .45s cubic-bezier(.25, .8, .25, 1)
+        }
+
+        .weapon-slide {
+            min-width: 100%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center
+        }
+
+        .weapon-info {
+            padding: 1rem
+        }
+
+        .weapon-name {
+            font-family: var(--ff-head);
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: var(--white);
+            margin-bottom: .3rem
+        }
+
+        .weapon-type {
+            font-size: .78rem;
+            font-weight: 700;
+            letter-spacing: .2em;
+            text-transform: uppercase;
+            color: var(--red);
+            margin-bottom: 1rem
+        }
+
+        .weapon-desc {
+            font-size: .95rem;
+            color: var(--text2);
+            line-height: 1.7;
+            margin-bottom: 1.5rem
+        }
+
+        .weapon-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: .5rem
+        }
+
+        .tag {
+            background: rgba(200, 16, 46, 0.15);
+            border: 1px solid rgba(200, 16, 46, 0.3);
+            border-radius: 20px;
+            padding: .25rem .8rem;
+            font-size: .75rem;
+            color: var(--red-bright);
+            font-weight: 600
+        }
+
+        .weapon-img-frame {
+            border-radius: 12px;
+            overflow: hidden;
+            background: var(--surface);
+            aspect-ratio: 4/3;
+            display: flex;
+            align-items: center;
+            justify-content: center
+        }
+
+        .weapon-img-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover
+        }
+
+        .carousel-controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1.5rem;
+            margin-top: 2rem
+        }
+
+        .carousel-btn {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: var(--surface);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all var(--trans)
+        }
+
+        .carousel-btn:hover {
+            background: var(--red);
+            border-color: var(--red);
+            color: #fff;
+            box-shadow: 0 0 20px rgba(200, 16, 46, 0.4)
+        }
+
+        .carousel-dots {
+            display: flex;
+            gap: .5rem
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--text3);
+            transition: all var(--trans);
+            cursor: pointer
+        }
+
+        .dot.active {
+            background: var(--red);
+            width: 24px;
+            border-radius: 4px
+        }
+
+        .combat-style-note {
+            text-align: center;
+            margin-top: 3rem;
+            padding: 1.5rem;
+            background: var(--surface);
+            border: 1px solid rgba(200, 16, 46, 0.2);
+            border-radius: 12px;
+            font-family: var(--ff-head);
+            font-size: 1rem;
+            color: var(--gold-light)
+        }
+
+        /* ===== SOCIAL SECTION ===== */
+        #social {
+            padding: 6rem 0;
+            background: linear-gradient(135deg, var(--bg2) 0%, #120a06 100%)
+        }
+
+        .social-inner {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center
+        }
+
+        .social-modes {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-top: 2rem
+        }
+
+        .mode-card {
+            background: var(--surface);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 1.2rem 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            transition: all var(--trans)
+        }
+
+        .mode-card:hover {
+            border-color: rgba(200, 16, 46, 0.35);
+            transform: translateX(4px)
+        }
+
+        .mode-icon {
+            font-size: 1.8rem;
+            flex-shrink: 0
+        }
+
+        .mode-card h4 {
+            font-family: var(--ff-head);
+            font-size: .95rem;
+            color: var(--white);
+            margin-bottom: .2rem
+        }
+
+        .mode-card p {
+            font-size: .83rem;
+            color: var(--text2)
+        }
+
+        .crossplay-badge {
+            margin-top: 1.5rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: .6rem
+        }
+
+        .platform-pill {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 6px;
+            padding: .4rem 1rem;
+            font-size: .8rem;
+            font-weight: 600;
+            color: var(--text2);
+            display: flex;
+            align-items: center;
+            gap: .4rem
+        }
+
+        /* ===== FAQ ===== */
+        #faq {
+            padding: 6rem 0;
+            background: var(--bg)
+        }
+
+        .faq-header {
+            text-align: center;
+            margin-bottom: 3rem
+        }
+
+        .faq-list {
+            max-width: 760px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: .8rem
+        }
+
+        .faq-item {
+            background: var(--surface);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            overflow: hidden;
+            transition: border-color var(--trans)
+        }
+
+        .faq-item.open {
+            border-color: rgba(200, 16, 46, 0.3)
+        }
+
+        .faq-q {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1.2rem 1.5rem;
+            font-size: .95rem;
+            font-weight: 600;
+            color: var(--white);
+            cursor: pointer;
+            text-align: left;
+            background: none;
+            border: none;
+            font-family: var(--ff-body);
+            gap: 1rem
+        }
+
+        .faq-q:hover {
+            color: var(--gold-light)
+        }
+
+        .faq-icon {
+            width: 22px;
+            height: 22px;
+            flex-shrink: 0;
+            border-radius: 50%;
+            background: rgba(200, 16, 46, 0.2);
+            color: var(--red);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform var(--trans), background var(--trans)
+        }
+
+        .faq-item.open .faq-icon {
+            transform: rotate(45deg);
+            background: var(--red);
+            color: #fff
+        }
+
+        .faq-a {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height .4s ease, padding .3s ease
+        }
+
+        .faq-a-inner {
+            padding: 0 1.5rem 1.2rem;
+            font-size: .9rem;
+            color: var(--text2);
+            line-height: 1.7
+        }
+
+        .faq-item.open .faq-a {
+            max-height: 300px
+        }
+
+        /* ===== CTA FINAL ===== */
+        #cta-final {
+            padding: 8rem 0 7rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            background: var(--bg2)
+        }
+
+        #cta-final::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse 70% 60% at 50% 50%, rgba(200, 16, 46, 0.12), transparent)
+        }
+
+        .cta-final-label {
+            font-size: .75rem;
+            font-weight: 700;
+            letter-spacing: .3em;
+            text-transform: uppercase;
+            color: var(--red);
+            margin-bottom: 1rem;
+            display: block
+        }
+
+        .cta-final-title {
+            font-family: var(--ff-head);
+            font-size: clamp(1.8rem, 5vw, 3.5rem);
+            font-weight: 900;
+            color: var(--white);
+            margin-bottom: 1rem;
+            line-height: 1.15
+        }
+
+        .cta-final-sub {
+            font-size: 1rem;
+            color: var(--text2);
+            max-width: 500px;
+            margin: 0 auto 2.5rem
+        }
+
+        .urgency {
+            display: inline-block;
+            background: rgba(200, 16, 46, 0.15);
+            border: 1px solid rgba(200, 16, 46, 0.4);
+            color: var(--red-bright);
+            font-size: .8rem;
+            font-weight: 700;
+            letter-spacing: .1em;
+            padding: .3rem 1rem;
+            border-radius: 20px;
+            margin-bottom: 2rem;
+            animation: pulse 2s infinite
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                box-shadow: 0 0 0 0 rgba(200, 16, 46, 0.4)
+            }
+
+            50% {
+                box-shadow: 0 0 0 8px rgba(200, 16, 46, 0)
+            }
+        }
+
+        .trust-row {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 2.5rem
+        }
+
+        .trust-item {
+            display: flex;
+            align-items: center;
+            gap: .5rem;
+            font-size: .82rem;
+            color: var(--text2)
+        }
+
+        .trust-item svg {
+            width: 16px;
+            height: 16px;
+            color: var(--gold)
+        }
+
+        /* ===== FOOTER ===== */
+        footer {
+            background: var(--bg);
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            padding: 2rem;
+            text-align: center
+        }
+
+        .footer-inner {
+            max-width: var(--max);
+            margin: 0 auto;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem
+        }
+
+        .footer-logo {
+            font-family: var(--ff-head);
+            font-size: .95rem;
+            font-weight: 700;
+            color: var(--text3);
+            letter-spacing: .1em
+        }
+
+        .footer-copy {
+            font-size: .78rem;
+            color: var(--text3)
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 1.5rem
+        }
+
+        .footer-links a {
+            font-size: .78rem;
+            color: var(--text3);
+            transition: color var(--trans)
+        }
+
+        .footer-links a:hover {
+            color: var(--text)
+        }
+
+        /* ===== SCROLL REVEAL ===== */
+        .reveal {
+            opacity: 0;
+            transform: translateY(28px);
+            transition: opacity .7s ease, transform .7s ease
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: none
+        }
+
+        .reveal-left {
+            opacity: 0;
+            transform: translateX(-30px);
+            transition: opacity .7s ease, transform .7s ease
+        }
+
+        .reveal-left.visible {
+            opacity: 1;
+            transform: none
+        }
+
+        .reveal-right {
+            opacity: 0;
+            transform: translateX(30px);
+            transition: opacity .7s ease, transform .7s ease
+        }
+
+        .reveal-right.visible {
+            opacity: 1;
+            transform: none
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media(max-width:900px) {
+
+            .world-inner,
+            .social-inner {
+                grid-template-columns: 1fr
+            }
+
+            .weapon-slide {
+                grid-template-columns: 1fr;
+                gap: 1.5rem
+            }
+
+            .gallery-grid {
+                display: flex;
+                flex-direction: column
+            }
+
+            .g-item img {
+                height: 220px !important
+            }
+
+            .world-stats {
+                grid-template-columns: repeat(2, 1fr)
+            }
+        }
+
+        @media(max-width:600px) {
+            nav {
+                padding: .8rem 1rem
+            }
+
+            .nav-logo {
+                font-size: .9rem
+            }
+
+            .hero-cta-wrap {
+                flex-direction: column
+            }
+
+            .btn-primary,
+            .btn-secondary {
+                width: 100%;
+                justify-content: center
+            }
+
+            .why-grid {
+                grid-template-columns: 1fr
+            }
+
+            .world-stats {
+                grid-template-columns: repeat(2, 1fr)
+            }
+
+            .footer-inner {
+                flex-direction: column;
+                text-align: center
+            }
+
+            .footer-links {
+                justify-content: center
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <canvas id="particles-canvas"></canvas>
+
+    <!-- NAV -->
+    <nav id="navbar">
+        <div class="nav-logo">Where <span>Winds</span> Meet</div>
+        <a href="https://store.steampowered.com/app/2295630/Where_Winds_Meet/" target="_blank"
+            class="nav-cta">Télécharger Gratis</a>
+    </nav>
+
+    <!-- HERO -->
+    <section id="hero">
+        <div class="hero-bg"></div>
+        <div class="hero-content">
+            <div class="hero-badge">⚔️ Wuxia RPG Open-World · Gratuit · PC / PS5 / Mobile</div>
+            <h1 class="hero-title">
+                Forgez votre légende<br>
+                dans un monde de <span class="accent">sabres et de vents</span>
+            </h1>
+            <p class="hero-sub">
+                <strong>RPG action Wuxia gratuit, open-world</strong> en Chine du 10e siècle.<br>
+                Devenez maître d'épée, explorez <strong>20+ régions vivantes</strong>. Cross-play PC · PS5 · Mobile.
+            </p>
+            <div class="hero-cta-wrap">
+                <a href="https://store.steampowered.com/app/2295630/Where_Winds_Meet/" target="_blank"
+                    class="btn-primary">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path
+                            d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm0 18a8 8 0 110-16 8 8 0 010 16zm-1-5h2v2h-2v-2zm0-8h2v6h-2V7z" />
+                    </svg>
+                    Télécharger GRATUITEMENT sur Steam
+                </a>
+                <a href="#gallery" class="btn-secondary">▶ Voir le gameplay</a>
+            </div>
+            <div class="hero-trusted">
+                <span>Disponible sur</span>
+                <div class="trust-pill">🖥 PC Steam</div>
+                <div class="trust-pill">🎮 PS5</div>
+                <div class="trust-pill">📱 Mobile</div>
+                <div class="trust-pill green">✅ 100% Gratuit</div>
+            </div>
+        </div>
+        <div class="hero-arrow">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9" />
+            </svg>
+        </div>
+    </section>
+
+    <!-- WHY DIFFERENT -->
+    <section id="why">
+        <div class="container">
+            <div class="reveal" style="text-align:center;margin-bottom:1rem">
+                <span class="section-label">Pourquoi choisir Where Winds Meet ?</span>
+                <h2 class="section-title">Tu n'es pas un joueur.<br>Tu es une <span
+                        style="color:var(--red-bright)">légende naissante.</span></h2>
+                <p class="section-sub" style="margin:0 auto">Ce n'est pas juste un jeu. C'est l'invitation à vivre le
+                    fantasme Wuxia ultime — libre, épique, vivant.</p>
+            </div>
+            <div class="why-grid">
+                <div class="why-card reveal">
+                    <span class="why-icon">🐉</span>
+                    <h3>Identité Wuxia Épique</h3>
+                    <p>Incarnez un héros de l'ère Song : votre histoire, vos choix, votre honneur. Pas un personnage
+                        préfabriqué — votre propre légende forgée combat après combat.</p>
+                </div>
+                <div class="why-card reveal" style="transition-delay:.1s">
+                    <span class="why-icon">🌊</span>
+                    <h3>Liberté Totale</h3>
+                    <p>Escaladez chaque pic, planez sur les vents, nagez dans les rivières. Plus de 20 régions à
+                        explorer sans temps de chargement. Le monde entier vous appartient.</p>
+                </div>
+                <div class="why-card reveal" style="transition-delay:.2s">
+                    <span class="why-icon">⚔️</span>
+                    <h3>Combat Cinématique</h3>
+                    <p>7 types d'armes, des dizaines de styles Wuxia, combos fluides et arts martiaux mystiques. Chaque
+                        duel est un film d'action — mêlée, distance ou furtivité.</p>
+                </div>
+                <div class="why-card reveal" style="transition-delay:.3s">
+                    <span class="why-icon">🏮</span>
+                    <h3>Monde Vraiment Vivant</h3>
+                    <p>10 000+ NPCs avec routines uniques. Météo dynamique, cycle jour/nuit, événements aléatoires. Vos
+                        décisions changent le monde — pas une décoration.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="divider container"></div>
+
+    <!-- GALLERY -->
+    <section id="gallery">
+        <div class="container">
+            <div class="gallery-header reveal">
+                <span class="section-label">Preuves Visuelles</span>
+                <h2 class="section-title">Voyez-le pour le croire</h2>
+            </div>
+            <div class="gallery-grid reveal">
+                <div class="g-item">
+                    <img src="hero_bg.jpeg" alt="Exploration Wuxia — Where Winds Meet" loading="lazy">
+                </div>
+                <div class="g-item">
+                    <img src="world.jpeg" alt="Open World 20+ régions — Where Winds Meet" loading="lazy">
+                </div>
+                <div class="g-item">
+                    <img src="combat.jpeg" alt="Combat co-op 4 joueurs — Where Winds Meet" loading="lazy">
+                </div>
+                <div class="g-item">
+                    <img src="weapons.jpeg" alt="Arsenal Wuxia — Where Winds Meet" loading="lazy">
+                </div>
+            </div>
+            <div class="gallery-badge reveal">
+                <div class="steam-badge">
+                    <span style="font-size:1.5rem">🎮</span>
+                    <div>
+                        <div class="rating">MOSTLY POSITIVE</div>
+                        <div class="label">79% positifs · 3 000+ reviews récentes · Steam</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="divider container"></div>
+
+    <!-- WORLD -->
+    <section id="world">
+        <div class="container">
+            <div class="world-inner">
+                <div class="world-image-wrap reveal-left">
+                    <img src="world.jpeg" alt="Open World Where Winds Meet 20 régions" loading="lazy">
+                </div>
+                <div class="reveal-right">
+                    <span class="section-label">Le Monde &amp; La Liberté</span>
+                    <h2 class="section-title">20+ régions.<br>Pas une carte vide.</h2>
+                    <p class="section-sub">Des cités animées aux temples secrets, des déserts mystiques aux forêts de
+                        bambous. Chaque recoin révèle un secret — <strong>vos choix changent l'histoire.</strong></p>
+                    <div class="world-stats">
+                        <div class="stat-box">
+                            <div class="num">20+</div>
+                            <div class="label">Régions</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="num">10K+</div>
+                            <div class="label">NPCs Uniques</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="num">∞</div>
+                            <div class="label">Explorations</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="num">0</div>
+                            <div class="label">Loading Screen</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- COMBAT & WEAPONS CAROUSEL -->
+    <section id="combat">
+        <div class="container">
+            <div class="combat-header reveal">
+                <span class="section-label">Combat &amp; Armes</span>
+                <h2 class="section-title">Combattez à <span style="color:var(--red-bright)">VOTRE style</span></h2>
+                <p class="section-sub" style="margin:0 auto">7 familles d'armes, des arts martiaux légendaires, un
+                    système de combat fluide comme un film Wuxia.</p>
+            </div>
+            <div class="weapons-carousel reveal">
+                <div class="weapons-track" id="weaponsTrack">
+
+                    <!-- Slide 1 -->
+                    <div class="weapon-slide">
+                        <div class="weapon-info">
+                            <div class="weapon-type">Arme principale</div>
+                            <h3 class="weapon-name">Épée Dao</h3>
+                            <p class="weapon-desc">La lame emblématique du guerrier Wuxia. Combos rapides, parrades
+                                parfaites, énergie Qi canalisée dans chaque frappe. Maîtrisez le flux de l'affrontement.
+                            </p>
+                            <div class="weapon-tags">
+                                <span class="tag">Mêlée</span><span class="tag">Qi Arts</span><span
+                                    class="tag">Polyvalent</span>
+                            </div>
+                        </div>
+                        <div class="weapon-img-frame">
+                            <img src="weapons.jpeg" alt="Épée Dao — Where Winds Meet" loading="lazy">
+                        </div>
+                    </div>
+
+                    <!-- Slide 2 -->
+                    <div class="weapon-slide">
+                        <div class="weapon-info">
+                            <div class="weapon-type">Vitesse &amp; Dualité</div>
+                            <h3 class="weapon-name">Doubles Lames</h3>
+                            <p class="weapon-desc">Deux lames, deux tempêtes. Enchaînements frénétiques, mobilité
+                                aérienne décuplée. Idéal pour les combattants qui préfèrent la vitesse à la force brute.
+                            </p>
+                            <div class="weapon-tags">
+                                <span class="tag">Vitesse</span><span class="tag">Aérien</span><span
+                                    class="tag">Agressif</span>
+                            </div>
+                        </div>
+                        <div class="weapon-img-frame">
+                            <img src="weapons.jpeg" alt="Doubles Lames — Where Winds Meet" loading="lazy">
+                        </div>
+                    </div>
+
+                    <!-- Slide 3 -->
+                    <div class="weapon-slide">
+                        <div class="weapon-info">
+                            <div class="weapon-type">Portée &amp; Contrôle</div>
+                            <h3 class="weapon-name">Lance Mystique</h3>
+                            <p class="weapon-desc">Portée maximale, contrôle de zone, coups balayants légendaires. La
+                                lance des généraux — impressionnante en solo, dévastatrice en co-op tactique.</p>
+                            <div class="weapon-tags">
+                                <span class="tag">Zone</span><span class="tag">Portée</span><span
+                                    class="tag">Tactique</span>
+                            </div>
+                        </div>
+                        <div class="weapon-img-frame">
+                            <img src="weapons.jpeg" alt="Lance — Where Winds Meet" loading="lazy">
+                        </div>
+                    </div>
+
+                    <!-- Slide 4 -->
+                    <div class="weapon-slide">
+                        <div class="weapon-info">
+                            <div class="weapon-type">Mobile &amp; Furtif</div>
+                            <h3 class="weapon-name">Rope Dart</h3>
+                            <p class="weapon-desc">Dard de corde : l'arme secrète des assassins Wuxia. Attaques à
+                                distance surprenantes, déplacements acrobatiques, enchaînez les cibles à toute vitesse.
+                            </p>
+                            <div class="weapon-tags">
+                                <span class="tag">Furtif</span><span class="tag">Distance</span><span
+                                    class="tag">Acrobatique</span>
+                            </div>
+                        </div>
+                        <div class="weapon-img-frame">
+                            <img src="weapons.jpeg" alt="Rope Dart — Where Winds Meet" loading="lazy">
+                        </div>
+                    </div>
+
+                    <!-- Slide 5 -->
+                    <div class="weapon-slide">
+                        <div class="weapon-info">
+                            <div class="weapon-type">Élégance Létale</div>
+                            <h3 class="weapon-name">Éventail de Combat</h3>
+                            <p class="weapon-desc">L'arme des lettrés guerriers. Des lames dissimulées dans la soie, des
+                                attaques de Qi en éventail, et une grâce trompeuse qui dévaste vos ennemis.</p>
+                            <div class="weapon-tags">
+                                <span class="tag">Qi Arts</span><span class="tag">Trompeur</span><span
+                                    class="tag">Stylé</span>
+                            </div>
+                        </div>
+                        <div class="weapon-img-frame">
+                            <img src="weapons.jpeg" alt="Éventail de combat — Where Winds Meet" loading="lazy">
+                        </div>
+                    </div>
+
+                    <!-- Slide 6 -->
+                    <div class="weapon-slide">
+                        <div class="weapon-info">
+                            <div class="weapon-type">Distance Pure</div>
+                            <h3 class="weapon-name">Arc Wuxia</h3>
+                            <p class="weapon-desc">Tireur de précision ou pluie de flèches de Qi : l'arc offre un style
+                                de jeu à distance complet. Snipez depuis les toits, combinez avec la furtivité.</p>
+                            <div class="weapon-tags">
+                                <span class="tag">Distance</span><span class="tag">Précision</span><span
+                                    class="tag">Furtif</span>
+                            </div>
+                        </div>
+                        <div class="weapon-img-frame">
+                            <img src="weapons.jpeg" alt="Arc — Where Winds Meet" loading="lazy">
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="carousel-controls">
+                <button class="carousel-btn" id="prevWeapon" aria-label="Précédent">&#8592;</button>
+                <div class="carousel-dots" id="weaponDots"></div>
+                <button class="carousel-btn" id="nextWeapon" aria-label="Suivant">&#8594;</button>
+            </div>
+            <div class="combat-style-note reveal">
+                ⚔️ "Mêlée, distance ou furtivité — le style est entièrement le vôtre."
+            </div>
+        </div>
+    </section>
+
+    <div class="divider container"></div>
+
+    <!-- SOCIAL -->
+    <section id="social">
+        <div class="container">
+            <div class="social-inner">
+                <div class="reveal-left">
+                    <span class="section-label">Multi &amp; Social</span>
+                    <h2 class="section-title">Solo épique ou<br><span style="color:var(--red-bright)">Co-op 4
+                            joueurs</span></h2>
+                    <p class="section-sub">Choisissez votre voie : légende solitaire ou confrérie de guerriers. Guildes,
+                        PvP, cross-play sans friction.</p>
+                    <div class="social-modes">
+                        <div class="mode-card">
+                            <span class="mode-icon">🗡️</span>
+                            <div>
+                                <h4>Solo Légendaire</h4>
+                                <p>Histoire principale immersive, liberté totale, aucune dépendance. Votre rythme, vos
+                                    règles.</p>
+                            </div>
+                        </div>
+                        <div class="mode-card">
+                            <span class="mode-icon">👥</span>
+                            <div>
+                                <h4>Co-op 4 Joueurs</h4>
+                                <p>Raids de donjons, boss épiques, synchronisation de combos entre amis. Tactique et
+                                    spectacle.</p>
+                            </div>
+                        </div>
+                        <div class="mode-card">
+                            <span class="mode-icon">🏆</span>
+                            <div>
+                                <h4>Guildes &amp; PvP</h4>
+                                <p>Formez des alliances, combattez pour les territoires, dominez les classements
+                                    mondiaux.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="crossplay-badge">
+                        <div class="platform-pill">🖥 PC Steam</div>
+                        <div class="platform-pill">🎮 PS5</div>
+                        <div class="platform-pill">📱 iOS &amp; Android</div>
+                        <div class="platform-pill" style="border-color:rgba(34,197,94,.4);color:#4ade80">🔄 Cross-Play
+                            &amp; Cross-Progression</div>
+                    </div>
+                </div>
+                <div class="reveal-right">
+                    <img src="combat.jpeg" alt="Co-op 4 joueurs — Where Winds Meet"
+                        style="border-radius:16px;box-shadow:0 20px 60px rgba(0,0,0,.6);border:1px solid rgba(200,16,46,.2)"
+                        loading="lazy">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq">
+        <div class="container">
+            <div class="faq-header reveal">
+                <span class="section-label">Questions Fréquentes</span>
+                <h2 class="section-title">Toutes vos réponses</h2>
+            </div>
+            <div class="faq-list">
+                <div class="faq-item">
+                    <button class="faq-q">
+                        🎁 C'est vraiment gratuit ? Pas de pay-to-win ?
+                        <span class="faq-icon">+</span>
+                    </button>
+                    <div class="faq-a">
+                        <div class="faq-a-inner">Oui, Where Winds Meet est 100% Free-to-Play. Toutes les fonctionnalités
+                            de gameplay sont accessibles sans dépenser un centime. Le jeu est financé par des
+                            cosmétiques optionnels (skins, effets visuels) qui n'affectent pas l'équilibre du jeu. C'est
+                            un modèle AAA-like équitable.</div>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-q">
+                        💻 Mon PC peut-il le faire tourner ?
+                        <span class="faq-icon">+</span>
+                    </button>
+                    <div class="faq-a">
+                        <div class="faq-a-inner"><strong>Configuration minimale :</strong> CPU Intel i7-7700K ou AMD
+                            Ryzen 5 1600, 16 GB RAM, GPU Nvidia GTX 1060 6GB ou AMD RX 580, 100 GB sur SSD, Windows
+                            10/11 64-bit. La majorité des PC de gaming modernes peut le lancer sans problème.</div>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-q">
+                        📦 Quelle est la taille du téléchargement ?
+                        <span class="faq-icon">+</span>
+                    </button>
+                    <div class="faq-a">
+                        <div class="faq-a-inner">Environ 100 GB sur SSD pour l'installation complète. C'est le prix d'un
+                            monde ouvert AAA avec 20+ régions, des milliers de POIs et des assets cinématiques de haute
+                            qualité. Un SSD est fortement recommandé pour des temps de chargement optimaux.</div>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-q">
+                        🌍 Le cross-play fonctionne-t-il vraiment ?
+                        <span class="faq-icon">+</span>
+                    </button>
+                    <div class="faq-a">
+                        <div class="faq-a-inner">Oui. Where Winds Meet supporte le cross-play (jouer ensemble sur
+                            différentes plateformes) ET la cross-progression (votre personnage, items et progression
+                            suivent partout). Commencez sur PC, continuez sur mobile dans le bus, reprenez sur PS5 le
+                            soir.</div>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-q">
+                        🕹️ Comment commencer ? C'est compliqué ?
+                        <span class="faq-icon">+</span>
+                    </button>
+                    <div class="faq-a">
+                        <div class="faq-a-inner">Cliquez sur "Télécharger sur Steam", installez le jeu et lancez-le.
+                            L'intro vous guide à travers création de personnage et tutoriel interactif. En moins de 10
+                            minutes vous serez en train de combattre dans la Chine ancienne. Aucune expérience Wuxia
+                            requise.</div>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-q">
+                        ⚔️ Le jeu est-il bon pour les débutants en RPG ?
+                        <span class="faq-icon">+</span>
+                    </button>
+                    <div class="faq-a">
+                        <div class="faq-a-inner">Absolument. Le système de combat est accessible mais profond — facile à
+                            prendre en main, des centaines d'heures pour maîtriser. Le jeu propose plusieurs niveaux de
+                            difficulté et une histoire claire qui vous guide. Que vous soyez fan de Genshin Impact,
+                            Ghost of Tsushima ou novice complet, WWM accueille tout le monde.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA FINAL -->
+    <section id="cta-final">
+        <div class="container">
+            <span class="urgency">⚡ Offre de lancement — Rejoignez les pionniers</span>
+            <span class="cta-final-label">Votre légende commence maintenant</span>
+            <h2 class="cta-final-title">Rejoignez des milliers de<br>maîtres d'épée légendaires.</h2>
+            <p class="cta-final-sub">Gratuit. Toujours. Sur PC, PS5 et Mobile. Téléchargez en 2 clics et forgez votre
+                destin dans la Chine ancienne.</p>
+            <a href="https://store.steampowered.com/app/2295630/Where_Winds_Meet/" target="_blank" class="btn-primary"
+                style="display:inline-flex;font-size:1.1rem;padding:1.1rem 2.8rem">
+                <svg viewBox="0 0 24 24" fill="currentColor" style="width:22px;height:22px">
+                    <path
+                        d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm-1 14l-4-4 1.41-1.41L11 13.17l6.59-6.59L19 8l-8 8z" />
+                </svg>
+                Télécharger GRATUITEMENT — Steam PC
+            </a>
+            <div class="trust-row">
+                <div class="trust-item">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z" />
+                    </svg>
+                    Aucune carte bleue requise
+                </div>
+                <div class="trust-item">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z" />
+                    </svg>
+                    Cross-play PC · PS5 · Mobile
+                </div>
+                <div class="trust-item">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z" />
+                    </svg>
+                    NetEase Games · Steam Verified
+                </div>
+                <div class="trust-item">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z" />
+                    </svg>
+                    79% positifs · Steam
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-inner">
+            <div class="footer-logo">WHERE WINDS MEET</div>
+            <div class="footer-copy">© 2025 NetEase Games. Tous droits réservés. Site non-officiel de présentation.
+            </div>
+            <div class="footer-links">
+                <a href="https://store.steampowered.com/app/2295630/Where_Winds_Meet/" target="_blank">Steam</a>
+                <a href="#faq">FAQ</a>
+                <a href="#why">À propos</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // ===== PARTICLES =====
+        (function () {
+            const canvas = document.getElementById('particles-canvas');
+            const ctx = canvas.getContext('2d');
+            let W, H, particles = [];
+            function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight }
+            resize(); window.addEventListener('resize', resize);
+            function rand(a, b) { return a + Math.random() * (b - a) }
+            class Particle {
+                constructor() { this.reset() }
+                reset() {
+                    this.x = rand(0, W); this.y = rand(0, H);
+                    this.vx = rand(-0.4, 0.4); this.vy = rand(-0.6, -0.1);
+                    this.size = rand(1, 3); this.life = rand(0.3, 1);
+                    this.decay = rand(0.002, 0.005);
+                    this.color = Math.random() < 0.5 ? 'rgba(200,16,46,' : 'rgba(212,160,23,';
+                }
+                update() { this.x += this.vx; this.y += this.vy; this.life -= this.decay; if (this.life <= 0 || this.y < -10) this.reset() }
+                draw() { ctx.save(); ctx.globalAlpha = this.life; ctx.fillStyle = this.color + this.life + ')'; ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill(); ctx.restore() }
+            }
+            for (let i = 0; i < 80; i++)particles.push(new Particle());
+            function loop() { ctx.clearRect(0, 0, W, H); particles.forEach(p => { p.update(); p.draw() }); requestAnimationFrame(loop) }
+            loop();
+        })();
+
+        // ===== NAV SCROLL =====
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => { navbar.classList.toggle('scrolled', window.scrollY > 60) }, { passive: true });
+
+        // ===== SCROLL REVEAL =====
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible') });
+        }, { threshold: 0.12 });
+        document.querySelectorAll('.reveal,.reveal-left,.reveal-right').forEach(el => observer.observe(el));
+
+        // ===== FAQ ACCORDION =====
+        document.querySelectorAll('.faq-q').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const item = btn.closest('.faq-item');
+                const isOpen = item.classList.contains('open');
+                document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
+                if (!isOpen) item.classList.add('open');
+            });
+        });
+
+        // ===== WEAPONS CAROUSEL =====
+        (function () {
+            const track = document.getElementById('weaponsTrack');
+            const dotsContainer = document.getElementById('weaponDots');
+            const slides = track.querySelectorAll('.weapon-slide');
+            let current = 0; const total = slides.length;
+            // build dots
+            slides.forEach((_, i) => {
+                const d = document.createElement('div');
+                d.className = 'dot' + (i === 0 ? ' active' : '');
+                d.addEventListener('click', () => goTo(i));
+                dotsContainer.appendChild(d);
+            });
+            function goTo(n) {
+                current = (n + total) % total;
+                track.style.transform = `translateX(-${current * 100}%)`;
+                document.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active', i === current));
+            }
+            document.getElementById('prevWeapon').addEventListener('click', () => goTo(current - 1));
+            document.getElementById('nextWeapon').addEventListener('click', () => goTo(current + 1));
+            // Auto-advance
+            setInterval(() => goTo(current + 1), 4500);
+        })();
+
+        // ===== PARALLAX HERO =====
+        const heroBg = document.querySelector('.hero-bg');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY < window.innerHeight)
+                heroBg.style.transform = `translateY(${window.scrollY * 0.3}px)`;
+        }, { passive: true });
+    </script>
+</body>
+
+</html>

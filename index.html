@@ -1154,8 +1154,8 @@
         </div>
         <div class="nav-right">
             <div class="lang-switcher">
-                <button class="lang-btn" data-lang="en">EN</button>
-                <button class="lang-btn active" data-lang="fr">FR</button>
+                <button class="lang-btn active" data-lang="en">EN</button>
+                <button class="lang-btn" data-lang="fr">FR</button>
                 <button class="lang-btn" data-lang="de">DE</button>
                 <button class="lang-btn" data-lang="zh">中文</button>
             </div>
@@ -1521,7 +1521,7 @@
         // Try to set initial volume
         if (audio) audio.volume = 0.5;
 
-        let isPlaying = false;
+        let isPlaying = true;
 
         if (btn && audio) {
             btn.addEventListener('click', () => {

@@ -222,7 +222,7 @@ const I18N = {
   }
 };
 
-let currentLang = 'fr';
+let currentLang = 'en';
 
 function applyLang(lang) {
   currentLang = lang;
